@@ -1,0 +1,60 @@
+---
+title: "lm_simple_tutorial"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{lm_simple_tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Linear Regression with `lm_simple`
+
+The `easyLM` package provides a minimal implementation of linear regression using ordinary least squares.
+
+In this vignette, we will:
+
+1. Fit a linear regression using `lm_simple()`
+2. Compare the results to base R’s `lm()`
+3. Benchmark performance of the function
+
+```{r}
+library(easyLM)
+
+# Simulate data
+set.seed(123)
+n <- 50
+x <- rnorm(n, mean = 5, sd = 2)
+y <- 2 + 3*x + rnorm(n, sd = 1)
+data <- data.frame(x, y)
+
+# Fit with lm_simple
+fit_simple <- lm_simple(y ~ x, data = data)
+fit_simple
+
+# Fit with base lm
+fit_lm <- lm(y ~ x, data = data)
+summary(fit_lm)
+
+# Compare coefficients
+all.equal(fit_simple$coef, coef(fit_lm), tolerance = 1e-6)
+
+# Benchmark
+library(microbenchmark)
+microbenchmark(
+  lm_simple = lm_simple(y ~ x, data = data),
+  lm_base   = lm(y ~ x, data = data),
+  times = 200
+)
+```
+
+# Conclusion
+
+The `lm_simple` function closely matches R's built-in `lm()` and provides a transparent, educational implementation of ordinary least squares.
+
