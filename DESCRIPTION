@@ -20,3 +20,5 @@ LinkingTo:
     RcppArmadillo
 Imports: 
     Rcpp
+URL: https://github.com/ntruettner1/easyLM
+BugReports: https://github.com/ntruettner1/easyLM/issues
